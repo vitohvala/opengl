@@ -137,44 +137,42 @@ processInput(GLFWwindow *window)
 {
     if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
-    if(glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) 
-        firstMouse = true;
     const float cameraSpeed = 2.5f * delta_time; // adjust accordingly
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS){
-        vec3 temp;
-        vec3_scale(temp, cameraFront, cameraSpeed);
-        vec3_add(cameraPos, cameraPos, temp);
-        //cameraPos += cameraSpeed * cameraFront;
-    }
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS){
-        vec3 temp;
-        vec3_scale(temp, cameraFront, cameraSpeed);
-        vec3_sub(cameraPos, cameraPos, temp);
-    }
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-        vec3 temp;
-        vec3 cross;
-        vec3_mul_cross(cross, cameraFront, cameraUp);
-        vec3_norm(temp, cross);
-        vec3 temp2;
-        vec3_scale(temp2, temp, cameraSpeed);
-        vec3_sub(cameraPos, cameraPos, temp2);
-        //cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
-    }
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS){
-        vec3 temp;
-        vec3 cross;
-        vec3_mul_cross(cross, cameraFront, cameraUp);
-        vec3_norm(temp, cross);
-        vec3 temp2;
-        vec3_scale(temp2, temp, cameraSpeed);
-        vec3_add(cameraPos, cameraPos, temp2);
-    }
-    //cameraPos[1] = 0.0f;
+        if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS){
+            vec3 temp;
+            vec3_scale(temp, cameraFront, cameraSpeed);
+            vec3_add(cameraPos, cameraPos, temp);
+            //cameraPos += cameraSpeed * cameraFront;
+        }
+        if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS){
+            vec3 temp;
+            vec3_scale(temp, cameraFront, cameraSpeed);
+            vec3_sub(cameraPos, cameraPos, temp);
+        }
+        if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+            vec3 temp;
+            vec3 cross;
+            vec3_mul_cross(cross, cameraFront, cameraUp);
+            vec3_norm(temp, cross);
+            vec3 temp2;
+            vec3_scale(temp2, temp, cameraSpeed);
+            vec3_sub(cameraPos, cameraPos, temp2);
+            //cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+        }
+        if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS){
+            vec3 temp;
+            vec3 cross;
+            vec3_mul_cross(cross, cameraFront, cameraUp);
+            vec3_norm(temp, cross);
+            vec3 temp2;
+            vec3_scale(temp2, temp, cameraSpeed);
+            vec3_add(cameraPos, cameraPos, temp2);
+        }
+        cameraPos[1] = 0.0f;
 
 }
 
-    unsigned int 
+unsigned int 
 get_shader_program(const char *vertex_filename, const char *fragment_filename) 
 {
     Shader shader = load_shader_source(vertex_filename, fragment_filename);
@@ -265,6 +263,7 @@ main(int argc, char **argv)
     }
 
     glfwMakeContextCurrent(window);
+
     
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         fprintf(stderr, "Failed to initialize GLAD\n");
@@ -275,50 +274,51 @@ main(int argc, char **argv)
 
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback); 
     glfwSetCursorPosCallback(window, mouse_callback); 
-    //glfwSetScrollCallback(window, scroll_callback);
-   
+    glfwSetScrollCallback(window, scroll_callback);
+
     float vertices[] = {
-        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-         0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-         0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-         0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+        // positions         // colors          //textures
+        -0.5f, -0.5f, -0.5f,  
+         0.5f, -0.5f, -0.5f,  
+         0.5f,  0.5f, -0.5f,  
+         0.5f,  0.5f, -0.5f,  
+        -0.5f,  0.5f, -0.5f,  
+        -0.5f, -0.5f, -0.5f,  
 
-        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-         0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+        -0.5f, -0.5f,  0.5f,  
+         0.5f, -0.5f,  0.5f,  
+         0.5f,  0.5f,  0.5f,  
+         0.5f,  0.5f,  0.5f,  
+        -0.5f,  0.5f,  0.5f,  
+        -0.5f, -0.5f,  0.5f,  
 
-        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-        -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-        -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+        -0.5f,  0.5f,  0.5f,  
+        -0.5f,  0.5f, -0.5f,  
+        -0.5f, -0.5f, -0.5f,  
+        -0.5f, -0.5f, -0.5f,  
+        -0.5f, -0.5f,  0.5f,  
+        -0.5f,  0.5f,  0.5f,  
 
-         0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-         0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-         0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-         0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-         0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-         0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+         0.5f,  0.5f,  0.5f,  
+         0.5f,  0.5f, -0.5f,  
+         0.5f, -0.5f, -0.5f,  
+         0.5f, -0.5f, -0.5f,  
+         0.5f, -0.5f,  0.5f,  
+         0.5f,  0.5f,  0.5f,  
 
-        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-         0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-         0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-         0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+        -0.5f, -0.5f, -0.5f,  
+         0.5f, -0.5f, -0.5f,  
+         0.5f, -0.5f,  0.5f,  
+         0.5f, -0.5f,  0.5f,  
+        -0.5f, -0.5f,  0.5f,  
+        -0.5f, -0.5f, -0.5f,  
 
-        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-         0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
+        -0.5f,  0.5f, -0.5f,  
+         0.5f,  0.5f, -0.5f,  
+         0.5f,  0.5f,  0.5f,  
+         0.5f,  0.5f,  0.5f,  
+        -0.5f,  0.5f,  0.5f,  
+        -0.5f,  0.5f, -0.5f  
     };
 
   /*  int indices[] = {
@@ -326,7 +326,7 @@ main(int argc, char **argv)
         1, 2, 3
     };*/
 
-    unsigned int shader2 = get_shader_program("shaders/shader2.vs", "shaders/shader2.fs");
+    unsigned int shader2 = get_shader_program("shaders/shader.vs", "shaders/shader2.fs");
     unsigned int shaderProgram = get_shader_program("shaders/shader.vs", "shaders/shader.fs");
     
     unsigned int vao1, VBO;
@@ -338,7 +338,7 @@ main(int argc, char **argv)
 
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
     unsigned int  VAO;
@@ -349,10 +349,8 @@ main(int argc, char **argv)
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
 
     int nrAttributes;
     glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
@@ -364,8 +362,6 @@ main(int argc, char **argv)
    
     float start_frame = glfwGetTime(), end_frame;
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
-    vec3 lpos = {1.2f, 1.0f, 2.0f};
 
     while(!glfwWindowShouldClose(window)) {
         processInput(window);
@@ -381,10 +377,11 @@ main(int argc, char **argv)
 
         vec3_norm(cameraFront, direction);
 
-
-        lpos[0] = sinf(glfwGetTime()) * 2.0f;
-        lpos[2] = cosf(glfwGetTime())  * 2.0f;
-
+        //mat4x4_identity(trans);
+        //mat4x4 ret;
+        //mat4x4_translate(trans, 0.5f, -0.5f, 0.0f);
+        //mat4x4_rotate(ret, trans, 0.0f, 0.0f, 1.0f, (float)glfwGetTime());
+        //mat4x4_scale_aniso(trans, ret, 0.5f, -0.5f, 0.0f);
         mat4x4 view;
         mat4x4_identity(view); 
         mat4x4 model;
@@ -398,8 +395,6 @@ main(int argc, char **argv)
 
 
         glUseProgram(shaderProgram);
-        glUniform3fv(glGetUniformLocation(shaderProgram, "lightPos"), 1, lpos);
-        glUniform3fv(glGetUniformLocation(shaderProgram, "viewPos"), 1, cameraPos);
         glUniform3f(glGetUniformLocation(shaderProgram, "objectColor"), 1.0f, 0.5f, 0.31f);
         glUniform3f(glGetUniformLocation(shaderProgram, "lightColor"), 1.0f, 1.0f, 1.0f);
 
@@ -421,9 +416,9 @@ main(int argc, char **argv)
         glUniformMatrix4fv(glGetUniformLocation(shader2, "view"), 1, GL_FALSE, (GLfloat*)view);
         
         mat4x4_identity(model);
-        mat4x4_translate(model, lpos[0], lpos[1], lpos[2]);
+        mat4x4_translate(model, 1.2f, 1.0f, 2.0f);
         mat4x4 amodel;
-        mat4x4_scale_aniso(amodel, model, 0.3f, 0.3f, 0.3f);
+        mat4x4_scale_aniso(amodel, model, 0.2f, 0.2f, 0.2f);
 
         glUniformMatrix4fv(glGetUniformLocation(shader2, "model"), 1, GL_FALSE, (GLfloat*)amodel);
 
